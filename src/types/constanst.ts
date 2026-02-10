@@ -6,3 +6,4 @@ export const MODULES_NAMES = {
 } as const;
 
 export type ModuleNameType = (typeof MODULES_NAMES)[keyof typeof MODULES_NAMES];
+export type StringObject = Record<string, unknown>;
