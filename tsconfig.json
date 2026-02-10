@@ -12,7 +12,7 @@
     "moduleResolution": "NodeNext",
     "types": ["node"],
     // For nodejs:
-    // "lib": ["esnext"],
+     "lib": ["esnext"],
     // "types": ["node"],
     // and npm install -D @types/node
 
@@ -32,10 +32,6 @@
     // "noUnusedParameters": true,
     // "noFallthroughCasesInSwitch": true,
     // "noPropertyAccessFromIndexSignature": true,
-"baseUrl": ".",
-    "paths": {
-      "*": ["node_modules/*"]
-    },
     // Recommended Options
     "strict": true,
     "jsx": "react-jsx",
@@ -44,5 +40,8 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true
+  },
 }
