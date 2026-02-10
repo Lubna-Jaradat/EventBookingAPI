@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js" // Fixed: must be prisma-client-js
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL") // Required: link to your .env file
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum TicketStatus {
+  VALID
+  USED
+  CANCELLED
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  tickets   Ticket[]
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  events Event[]
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @db.Text
+  date        DateTime
+  location    String
+  capacity    Int
+  price       Decimal  @db.Decimal(10, 2)
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  tickets     Ticket[]
+  createdAt   DateTime @default(now())
+
+  @@index([categoryId]) // Added: for faster event filtering by category
+}
+
+model Ticket {
+  id         Int          @id @default(autoincrement())
+  ticketCode String       @unique
+  status     TicketStatus @default(VALID)
+  userId     Int
+  user       User         @relation(fields: [userId], references: [id])
+  eventId    Int
+  event      Event        @relation(fields: [eventId], references: [id])
+  createdAt  DateTime     @default(now())
+
+  @@index([userId])  // Added: for faster "my tickets" lookups
+  @@index([eventId]) // Added: for checking event attendance lists
+}
