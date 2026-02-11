@@ -16,7 +16,7 @@ export const ResponseEnhancer = (
     res.status(201).json(formatApiResponse({ success: true, data }));
   res.error = (err) =>
     res
-      .status(err.error.statusCode)
+      .status(err?.error.statusCode || 500)
       .json(err);
 
   next();

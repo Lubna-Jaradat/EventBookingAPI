@@ -14,18 +14,24 @@ export class CustomError extends Error {
   }
 }
 
+function isCustomError(err: any): err is CustomError {
+  return err?.errorType === "custom";
+}
+
 export const HandleError = (err: unknown, res: Response) => {
-  if (err instanceof CustomError) {
+  if (isCustomError(err)) {
     res.error({
       success: false,
       error: { message: err.message, statusCode: err.statusCode },
     });
+    console.log(`custom error in ${err.moduleName} module`, err);
 
     return;
   }
 
   res.error({
     success: false,
-    error: { message: "internal server error", statusCode: 500 },
+    error: { message: "<I'mh here>internal server error", statusCode: 500 },
   });
+    console.log(`internal server error`, err);
 };
