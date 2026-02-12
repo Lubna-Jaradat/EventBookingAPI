@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js" 
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -18,13 +18,14 @@ enum TicketStatus {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String
-  role      Role     @default(USER)
-  tickets   Ticket[]
-  createdAt DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  password     String
+  name         String
+  role         Role     @default(USER)
+  tickets      Ticket[]
+  refreshToken String?  @db.Text
+  createdAt    DateTime @default(now())
 }
 
 model Category {
@@ -59,6 +60,6 @@ model Ticket {
   event      Event        @relation(fields: [eventId], references: [id])
   createdAt  DateTime     @default(now())
 
-  @@index([userId])  // Added: for faster "my tickets" lookups
+  @@index([userId]) // Added: for faster "my tickets" lookups
   @@index([eventId]) // Added: for checking event attendance lists
 }
